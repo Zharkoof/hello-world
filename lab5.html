@@ -1,154 +1,109 @@
-<!DOCTYPE HTML> 
 <html> 
-<head> 
-
-<script type="text/javascript"> 
-
-function checkEmpty(field) { 
-if(field.value.lenght==0) { 
-alert("Поле не заполнено!"); 
-}} 
-
-function isEmpty(field) { 
-return field.value.length==0; 
+<script> 
+function select (id, options) { 
+var sel=document.createElement("select"); 
+sel.id=id; 
+for (var i=0; i<options.length; i++) { 
+console.log(3); 
+var opt=document.createElement("option"); 
+console.log(i); 
+opt.value=options[i]; 
+opt.text=options[i]; 
+console.log(opt.value); 
+console.log(opt.text); 
+sel.appendChild(opt); 
 } 
-function isLonger20(field) { 
-return field.value.length>20; 
+return sel; 
 } 
-function containsDigits(field) { 
-var digits="0123456789"; 
-for (var i=0; i<digits.length; i++) { 
-if (field.value.indexOf(digits[i])!=-1) { 
-return true; 
-} 	
+function button (text, func) { 
+var btn=document.createElement('input'); 
+btn.type="button"; 
+btn.value=text; 
+btn.onclick=func; 
+return btn; 
 } 
-return false; 
+function label(text) { 
+var newLabel=document.createElement('label'); 
+newLabel.innerHTML=text; 
+return newLabel; 
 } 
-function checkName(field) {
-label = document.getElementById(field.id+"mes");
-if(isEmpty(field)) {
-label.innerHTML="Поле пустое!";
-} else if (isLonger20(field)) {
-label.innerHTML="Введено более 20 символов!";
-} else if (containsDigits(field)) {
-label.innerHTML="Введены цифры!";
-} else {
-label.innerHTML="";
-}
-}
-function isLength6(field) {
-return field.value.length==6;
-}
-function containsNotDigits(field) {
-var digits = "1234567890";
-for (var i=0; i<field.value.length; i++) {
-if (digits.indexOf(field.value[i])==-1) {
-return true;
-}
-}
-return false;
-}
-function checkZip (field) {
-label=document.getElementById(field.id + "mes");
-if (isEmpty(field)) {
-label.innerHTML="Поле не заполнено!";
-} else if (!isLength6(field)) {
-label.innerHTML="Длина не равная 6!";
-} else if (containsNotDigits(field)) {
-label.innerHTML="Введены не цифры!";
-} else{
-label.innerHTML="";
-}
-}
-function checkEmail(field) { 
-label=document.getElementById(field.id + "mes"); 
-if (isEmpty(field)) { 
-label.innerHTML="Поле не заполнено!"; 
-} else if (!isCorrectEmail(field)) { 
-label.innerHTML="Некоректно введен e-mail!"; 
-} else { 
-label.innerHTML=""; 
+function br() { 
+return document.createElement('br'); 
+} 
+function text(id) { 
+var textField=document.createElement('input'); 
+textField.type='text'; 
+textField.id=id; 
+return textField; 
+} 
+function number (id) { 
+var nField=document.createElement ('input'); 
+nField.type='number'; 
+nField.id=id; 
+nField.min=1; 
+return nField; 
+} 
+function clr() { 
+var calcPlace=document.getElementById("calculator"); 
+while (calcPlace.firstChild !=null) { 
+calcPlace.removeChild(calcPlace.firstChild); 
 } 
 } 
-function isCorrectEmail (field) { 
-var emailRegex=/^\w+@\w+\.\w{2,4}$/; 
-return emailRegex.test(field.value); 
+function add(element) { 
+document.getElementById('calculator').appendChild(element); 
 } 
-function checkPhone(field) { 
-label=document.getElementById(field.id + "mes"); 
-if (isEmpty(field)) { 
-label.innerHTML="Поле не заполнено!"; 
-} else if (!isCorrectPhone(field)) { 
-label.innerHTML="Некоректно введен телефон!"; 
-} else { 
-label.innerHTML=""; 
+function createSimple () { 
+add(text("id_n1")); 
+console.log(1); 
+add(select("id_oper", new Array("+", "-"))); 
+console.log(2); 
+add(text ("id_n2")); 
+add(button("=", calculateResult)); 
+add(text("id_result")); 
 } 
+function createPercent () { 
+add(label("Сумма вклада :")); 
+add(text("id_summa")); add(br()); 
+add(label("Срок вклада (лет) :")); 
+add(text("id_srok")); add(br()); 
+add(label("Процентная ставка : ")); 
+add(text("id_procent")); add(br()); 
+add(button("%", calculatePercent)); add(br()); 
+add(label("Доход :")); 
+add(text("id_dohod")); 
 } 
-function isCorrectPhone(field) { 
-var emailRegex=/^8-\d{3}-\d{3}-\d{2}-\d{2}$/; 
-return emailRegex.test(field.value); 
+function calculatePercent () { 
+var s=document.getElementById("id_summa").value; 
+var t=document.getElementById("id_srok").value; 
+var p=document.getElementById("id_procent").value; 
+document.getElementById('id_dohod').value=0.01*s*t*p; 
 } 
-function checkDate(field) { 
-label=document.getElementById(field.id + "mes"); 
-if (isEmpty(field)) { 
-label.innerHTML="Поле не заполнено!"; 
-} else if (!isCorrectDate(field)) { 
-label.innerHTML="Некоректно введена дата!"; 
-} else if (!isCorrectDateValues(field)) { 
-label.innerHTML="Некоректные значения даты!"; 
-} else { 
-label.innerHTML=""; 
-} 
-} 
-function isCorrectDateValues(field) { 
-var dd=parseInt(field.value.substring(0,2)); 
-var mm=parseInt(field.value.substring(3,5)); 
-var checks; 
-switch(mm) 
-{ 
-case 01:checks=31;break; 
-case 02:checks=28;break; 
-case 03:checks=31;break; 
-case 04:checks=30;break; 
-case 05:checks=31;break; 
-case 06:checks=30;break; 
-case 07:checks=31;break; 
-case 08:checks=31;break; 
-case 09:checks=30;break; 
-case 10:checks=31;break; 
-case 11:checks=30;break; 
-case 12:checks=31;break; 
-default: alert("неверное значение месяца");break; 
-} 
-return 1<=dd && dd<=checks && 1<=mm && mm<=12; 
+function calculateResult() { 
+var n1=parseFloat(document.getElementById("id_n1").value); 
+var n2=parseFloat(document.getElementById("id_n2").value); 
+var oper=document.getElementById("id_oper").value; 
+document.getElementById("id_result").value= 
+oper=="+" ? n1+n2 : n1-n2; 
 } 
 
-function isCorrectDate(field) { 
-var dataRegex=/^\d{2}(\/|\.)\d{2}(\/|\.)\d{4}$/; 
-return dataRegex.test (field.value); 
-} 
+
 </script> 
-</head> 
+
 <body> 
-Имя:<input type="text" id = "firstname" onkeyup="checkName(this)" 
-onblur="checkName(this)"/> 
-<span id="firstnamemes"></span><br> 
-Фамилия:<input type="text" id="surname" onblur="checkEmpty(this)" 
-onkeyup="checkName(this)"/> 
-<span id="surnamemes"></span><br> 
-Почтовый индекс:<input type="text" id="zipcode" onkeyup="checkZip(this)" 
-onblur="checkZip(this)"/> 
-<span id="zipcodemes"></span><br> 
-E-mail:<input type="text" id="email" onkeyup="checkEmail(this)" 
-onblur="checkEmail(this)"/> 
-<span id="emailmes"></span><br> 
-Телефон:<input type="text" id="phone" onkeyup="checkPhone(this)" 
-onblur="checkPhone(this)"/> 
-<span id="phonemes"></span><br> 
-Дата рождения:<input type="text" id="birthdate" onkeyup="checkDate(this)" 
-onblur="checkDate(this)"/> 
-<span id="birthdatemes"></span><br> 
+<div id="selector"> 
 
+<input type="radio" name="calculatorType" 
+onclick="clr(); createSimple()"/> 
+Сложение и вычитание 
+<br> 
+<input type="radio" name="calculatorType" 
+onclick="clr(); createPercent()"/> 
+Калькулятор процентов 
+
+</div> 
+<br> 
+<br> 
+<div id="calculator"> 
+</div> 
 </body> 
-</html>
-
+</html> 
